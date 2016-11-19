@@ -13,12 +13,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;  //TODO maybe this id should be different
+    private String login;
+
     private PersonalInfo personalInfo;
     private ContactInfo contactInfo;
     private Address address;
 
     public String getId() {
         return id;
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     public PersonalInfo getPersonalInfo() {
@@ -40,15 +46,21 @@ public class User {
 
         User user = (User) o;
 
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        return personalInfo != null ? personalInfo.equals(user.personalInfo) : user.personalInfo == null;
+        if (!id.equals(user.id)) return false;
+        if (!login.equals(user.login)) return false;
+        if (!personalInfo.equals(user.personalInfo)) return false;
+        if (!contactInfo.equals(user.contactInfo)) return false;
+        return address.equals(user.address);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (personalInfo != null ? personalInfo.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + personalInfo.hashCode();
+        result = 31 * result + contactInfo.hashCode();
+        result = 31 * result + address.hashCode();
         return result;
     }
 }

@@ -41,7 +41,7 @@ class UserControllerTest extends Specification{
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build()
     }
 
-    def "should invoke sample test"() {
+    def "should create user"() {
         given:
             User user = createSampleUser()
 
@@ -56,17 +56,18 @@ class UserControllerTest extends Specification{
             def actualUser = userRepository.findOne(userId)
 
         then:
+            actualUser.getId() != null
+            actualUser.getLogin() == "sampleLogin"
             actualUser.getPersonalInfo() == user.getPersonalInfo()
             actualUser.getAddress() == user.getAddress()
             actualUser.getContactInfo() == user.getContactInfo()
-            actualUser.getId() != null
     }
 
     Object createSampleUser() {
         PersonalInfo personalInfo = new PersonalInfo(name: "Marek", surname: "Ostachiewicz", pesel: 900835643)
         ContactInfo contactInfo = new ContactInfo(email: "marek.ostachiewicz@gmail.com", phoneNumber: 603658456)
         Address address = new Address(country: "Poland", city: "Krakow", street: "Tyniecka", streetNo: "12/5", postalCode: "32-050")
-        return new User(personalInfo: personalInfo, contactInfo: contactInfo, address: address)
+        return new User(login: "sampleLogin",personalInfo: personalInfo, contactInfo: contactInfo, address: address)
     }
 
 
