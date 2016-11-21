@@ -13,6 +13,7 @@
         <module>user-service</module>
         <module>config</module>
         <module>eureka-service</module>
+        <module>auth-service</module>
     </modules>
 
 </project>
