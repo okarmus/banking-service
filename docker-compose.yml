@@ -7,6 +7,12 @@ services:
     ports:
       - 8888:8888
 
+  eureka-service:
+    build: eureka-service
+    restart: always
+    ports:
+      - 8761:8761
+
   user-service:
     build: user-service
     restart: always
