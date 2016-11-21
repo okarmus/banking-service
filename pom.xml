@@ -11,7 +11,8 @@
 
     <modules>
         <module>user-service</module>
-        <module>config-service</module>
+        <module>config</module>
+        <module>eureka-service</module>
     </modules>
 
 </project>

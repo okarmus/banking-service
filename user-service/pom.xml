@@ -41,7 +41,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -73,9 +72,9 @@
         </dependency>
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo</artifactId>	<!-- TODO mongo db should be in-memory only for testing puropsed -->
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<version>1.50.5</version>
-			<!--<scope>test</scope>-->
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -96,6 +95,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<finalName>user-service</finalName>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>

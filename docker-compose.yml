@@ -1,0 +1,20 @@
+version: '2'
+services:
+
+  config:
+    build: config
+    restart: always
+    ports:
+      - 8888:8888
+
+  user-service:
+    build: user-service
+    restart: always
+    ports:
+      - 8081:8081
+
+  user-service-mongodb:
+    build: user-service-mongodb
+    restart: always
+    ports:
+      - 27017:27017
