@@ -34,7 +34,7 @@ public class AcountController {
         accountCreateService.create(account);
     }
 
-    @RequestMapping("/all")
+    @RequestMapping("/all")                             //TODO only admin should have a right to do that
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }

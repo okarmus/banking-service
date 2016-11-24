@@ -23,8 +23,8 @@ public class AuthServiceApplication extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers(POST,"/account").permitAll()
-				.antMatchers("/**").fullyAuthenticated();
+				.antMatchers(POST,"/account").permitAll();
+				//.antMatchers("/**").fullyAuthenticated();
 	}
 
 }
