@@ -1,6 +1,12 @@
 version: '2'
 services:
 
+  gateway:
+    build: gateway
+    restart: always
+    ports:
+      - 4000:4000
+
   config:
     build: config
     restart: always

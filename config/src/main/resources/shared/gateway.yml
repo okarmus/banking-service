@@ -1,0 +1,19 @@
+server:
+  port: ${PORT:4000}
+
+
+zuul:
+  ignoredServices: '*'
+
+  routes:
+    auth-service:
+      path: /uaa/**
+      url: http://auth-service:5000
+      stripPrefix: false
+      sensitiveHeaders:
+
+    user-service:
+      path: /users/**
+      url: http://user-service:8081
+      stripPrefix: false
+      sensitiveHeaders:
