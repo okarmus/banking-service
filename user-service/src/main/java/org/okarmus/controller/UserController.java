@@ -27,6 +27,11 @@ public class UserController {
         return new ResponseEntity<>(persistedId, CREATED);
     }
 
+    @RequestMapping
+    public String hello() {
+        return "hello from user service";
+    }
+
     @RequestMapping("/{userId}")
     public ResponseEntity<User> retrieveUse(@PathVariable("userId") String userId) {  //TODO what if user does not exist
         User user = userRepository.findOne(userId);

@@ -30,13 +30,19 @@ public class AcountController {
     public Principal getAccount(Principal principal) { return principal;}
 
     @RequestMapping(method = POST)
-    public void createAccount(@RequestBody Account account) {                            //TODO this should return info about success/failure
+    public String createAccount(@RequestBody Account account) {                            //TODO this should return info about success/failure
         accountCreateService.create(account);
+        return "Auth data has been added sucessfuly";
     }
 
     @RequestMapping("/all")                             //TODO only admin should have a right to do that
     public List<Account> getAccounts() {
         return accountRepository.findAll();
+    }
+
+    @RequestMapping
+    public String hello() {
+        return "hello from auth service";
     }
 
 }

@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>user-service</module>
         <module>config</module>
         <module>eureka-service</module>
         <module>auth-service</module>
         <module>gateway</module>
+        <module>user-service</module>
+        <module>register-service</module>
     </modules>
 
 </project>

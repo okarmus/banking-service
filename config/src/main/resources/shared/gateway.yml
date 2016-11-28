@@ -17,3 +17,10 @@ zuul:
       url: http://user-service:8081
       stripPrefix: false
       sensitiveHeaders:
+
+    register-service:
+      path: /register/**
+      url: http://register-service:8082
+      stripPrefix: false
+      sensitiveHeaders:
+

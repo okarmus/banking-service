@@ -1,10 +1,22 @@
+logging:
+  level:
+    org.okarmus: DEBUG
+    org.springframework.cloud.netflix.feign: DEBUG
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
 eureka:
   instance:
     prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://eureka-service:8761/eureka/
-
 
 
 security:
