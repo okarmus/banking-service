@@ -9,7 +9,5 @@ import java.util.Optional;
  * Created by mateusz on 22.11.16.
  */
 public interface AccountRepository extends JpaRepository<Account,Long> {
-
     Optional<Account> findByLogin(String login);
-
 }

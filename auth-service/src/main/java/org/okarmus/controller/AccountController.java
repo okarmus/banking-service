@@ -4,6 +4,7 @@ import org.okarmus.domain.Account;
 import org.okarmus.repository.AccountRepository;
 import org.okarmus.service.create.AccountCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -18,31 +20,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @RestController
 @RequestMapping("/account")
-public class AcountController {
+public class AccountController {
 
     @Autowired
     private AccountCreateService accountCreateService;
-
     @Autowired
     private AccountRepository accountRepository;
+
+    @RequestMapping(method = POST)
+    public ResponseEntity<Void> createAccount(@RequestBody Account account) {
+        accountCreateService.create(account);
+        return new ResponseEntity<>(CREATED);
+    }
 
     @RequestMapping("/current")
     public Principal getAccount(Principal principal) { return principal;}
 
-    @RequestMapping(method = POST)
-    public String createAccount(@RequestBody Account account) {                            //TODO this should return info about success/failure
-        accountCreateService.create(account);
-        return "Auth data has been added sucessfuly";
-    }
-
-    @RequestMapping("/all")                             //TODO only admin should have a right to do that
+    @RequestMapping("/all")
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }
-
-    @RequestMapping
-    public String hello() {
-        return "hello from auth service";
-    }
-
 }

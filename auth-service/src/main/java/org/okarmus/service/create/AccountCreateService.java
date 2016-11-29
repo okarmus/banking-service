@@ -1,10 +1,14 @@
 package org.okarmus.service.create;
 
 import org.okarmus.domain.Account;
+import org.okarmus.exception.UserExistsException;
 import org.okarmus.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static java.lang.String.*;
 
 /**
  * Created by mateusz on 22.11.16.
@@ -12,24 +16,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountCreateService {
 
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
     @Autowired
     private AccountRepository repository;
 
-    public void create(Account account) {
-        repository.findByLogin(account.getLogin())      //TODO we are checking if user with this login already exists
-                  .ifPresent(account1 ->  new RuntimeException("There is a problem because user exists"));
+    @Value("${exception.message.userAlreadyExist}")
+    private String exceptionMessage;
 
-        Account encodedAccount = encodePassword(account);
-        repository.save(encodedAccount);
+    public void create(Account account) {               //TODO maybe password should be hashed
+        checkIfLoginUnique(account);
+        saveAccount(account);
     }
 
-    private Account encodePassword(Account account) {
-        String encodedPwd = encoder.encode(account.getPassword());
-        return new Account(account.getLogin(), encodedPwd, account.isActive());
-
+    private void checkIfLoginUnique(Account account) {
+        repository.findByLogin(account.getLogin())
+                  .ifPresent(a -> { throw new UserExistsException(format(exceptionMessage, a.getLogin()));});
     }
 
-
+    private void saveAccount(Account account) {
+        repository.save(account);
+    }
 }

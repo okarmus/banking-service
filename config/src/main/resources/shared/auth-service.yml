@@ -4,3 +4,8 @@ server:
 
 security:
   sessions: if_required
+
+exception:
+  message:
+    userAlreadyExist: User with login %s already exist
+    userNotExist: User with login %s does not exist
