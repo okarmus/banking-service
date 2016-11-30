@@ -1,4 +1,4 @@
-package org.okarmus.client.user;
+package org.okarmus.service.client.user;
 
 import feign.Headers;
 import org.okarmus.domain.User;
@@ -17,9 +17,4 @@ public interface UserServiceClient {
     @RequestMapping(method = POST, value = "/users/user")
     @Headers("Content-Type: application/json")
     String addUser(User user);
-
-
-    @RequestMapping(method = GET, value = "/users/user")
-    String getHello();
-
 }

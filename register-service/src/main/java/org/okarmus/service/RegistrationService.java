@@ -1,9 +1,12 @@
 package org.okarmus.service;
 
-import org.okarmus.client.auth.AuthServiceClient;
-import org.okarmus.client.user.UserServiceClient;
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import org.okarmus.service.client.auth.FeignAuthClient;
+import org.okarmus.service.client.exception.ClientExistsException;
+import org.okarmus.service.client.user.UserServiceClient;
 import org.okarmus.domain.RegistrationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,23 +15,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegistrationService {
 
-    private final AuthServiceClient authClient;
+    private final FeignAuthClient authClient;
     private final UserServiceClient userClient;
 
     @Autowired
-    public RegistrationService(AuthServiceClient authClient, UserServiceClient userClient) {
+    public RegistrationService(FeignAuthClient authClient, UserServiceClient userClient) {
         this.authClient = authClient;
         this.userClient = userClient;
     }
 
     public String register(RegistrationData registrationData) {
+        try {
+            authClient.createAccount(registrationData.getLoginData());
+            String userResult = userClient.addUser(registrationData.getUserData());
+            return userResult;
 
-        String authResult = authClient.createAccount(registrationData.getLoginData());
+        }catch (HystrixRuntimeException ex) {
+            if (ex.getCause() instanceof ClientExistsException) {   //TODO handle situation when client with id exists
+                return ex.getCause().getMessage();
+            }
+            //TODO we should handle situation when client was added to auth but hasent been to user
+            //TODO so it should be reverted from auth
 
-        String userResult = userClient.addUser(registrationData.getUserData());
-
-        System.out.println("Registration should be done here");
-
-        return authResult + " " + userResult;
+            throw ex;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package org.okarmus.controller;
 
-import org.okarmus.client.auth.AuthServiceClient;
-import org.okarmus.client.user.UserServiceClient;
+import org.okarmus.service.client.auth.FeignAuthClient;
+import org.okarmus.service.client.user.UserServiceClient;
 import org.okarmus.domain.RegistrationData;
 import org.okarmus.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class RegistrationController {
     private final RegistrationService service;
 
     @Autowired
-    private AuthServiceClient authClient;
+    private FeignAuthClient authClient;
 
     @Autowired
     private UserServiceClient userClient;
@@ -35,11 +35,5 @@ public class RegistrationController {
     @RequestMapping(method = POST)
     public String register(@RequestBody RegistrationData registrationData) {
         return service.register(registrationData);
-    }
-
-  //  @HystrixCommand(fallbackMethod = "fallback")
-    @RequestMapping
-    public String getHello() {
-        return authClient.getHello() + userClient.getHello();
     }
 }

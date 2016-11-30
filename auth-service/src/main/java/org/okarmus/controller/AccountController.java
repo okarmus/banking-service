@@ -28,9 +28,9 @@ public class AccountController {
     private AccountRepository accountRepository;
 
     @RequestMapping(method = POST)
-    public ResponseEntity<Void> createAccount(@RequestBody Account account) {
+    public ResponseEntity<String> createAccount(@RequestBody Account account) {
         accountCreateService.create(account);
-        return new ResponseEntity<>(CREATED);
+        return new ResponseEntity<>("", CREATED);
     }
 
     @RequestMapping("/current")
