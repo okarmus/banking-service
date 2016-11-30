@@ -1,5 +1,8 @@
 package org.okarmus.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Created by mateusz on 17.11.16.
  */
@@ -11,6 +14,7 @@ public class ContactInfo {
     public String getEmail() {
         return email;
     }
+
     public int getPhoneNumber() {
         return phoneNumber;
     }
@@ -20,17 +24,18 @@ public class ContactInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ContactInfo that = (ContactInfo) o;
-
-        if (phoneNumber != that.phoneNumber) return false;
-        return email != null ? email.equals(that.email) : that.email == null;
-
+        ContactInfo contact = (ContactInfo) o;
+        return new EqualsBuilder()
+                .append(phoneNumber, contact.phoneNumber)
+                .append(email, contact.email)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = email != null ? email.hashCode() : 0;
-        result = 31 * result + phoneNumber;
-        return result;
+        return new HashCodeBuilder()
+                .append(email)
+                .append(phoneNumber)
+                .toHashCode();
     }
 }

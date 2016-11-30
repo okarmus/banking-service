@@ -1,5 +1,8 @@
 package org.okarmus.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * Created by mateusz on 17.11.16.
  */
@@ -11,9 +14,11 @@ public class PersonalInfo {
     public String getName() {
         return name;
     }
+
     public String getSurname() {
         return surname;
     }
+
     public int getPesel() {
         return pesel;
     }
@@ -23,19 +28,20 @@ public class PersonalInfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PersonalInfo that = (PersonalInfo) o;
-
-        if (pesel != that.pesel) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return surname != null ? surname.equals(that.surname) : that.surname == null;
-
+        PersonalInfo personal = (PersonalInfo) o;
+        return new EqualsBuilder()
+                .append(pesel, personal.pesel)
+                .append(name, personal.name)
+                .append(surname, personal.surname)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + pesel;
-        return result;
+        return new HashCodeBuilder()
+                .append(name)
+                .append(surname)
+                .append(pesel)
+                .toHashCode();
     }
 }

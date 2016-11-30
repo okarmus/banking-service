@@ -1,8 +1,9 @@
 package org.okarmus.domain;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 
 
 /**
@@ -12,9 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User {
     @Id
-    private String id;  //TODO maybe this id should be different
+    private String id;
     private String login;
-
     private PersonalInfo personalInfo;
     private ContactInfo contactInfo;
     private Address address;
@@ -45,22 +45,23 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-
-        if (!id.equals(user.id)) return false;
-        if (!login.equals(user.login)) return false;
-        if (!personalInfo.equals(user.personalInfo)) return false;
-        if (!contactInfo.equals(user.contactInfo)) return false;
-        return address.equals(user.address);
-
+        return new EqualsBuilder()
+                .append(user, user.id)
+                .append(login, user.login)
+                .append(personalInfo, user.personalInfo)
+                .append(contactInfo, user.contactInfo)
+                .append(address, user.address)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + login.hashCode();
-        result = 31 * result + personalInfo.hashCode();
-        result = 31 * result + contactInfo.hashCode();
-        result = 31 * result + address.hashCode();
-        return result;
+        return new HashCodeBuilder()
+                .append(id)
+                .append(login)
+                .append(personalInfo)
+                .append(contactInfo)
+                .append(address)
+                .toHashCode();
     }
 }

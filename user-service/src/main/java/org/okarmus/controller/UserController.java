@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @RequestMapping("/{userId}")
-    public ResponseEntity<User> retrieveUse(@PathVariable("userId") String userId) {  //TODO what if user does not exist
+    public ResponseEntity<User> retrieveUser(@PathVariable("userId") String userId) {  //TODO what if user does not exist
         User user = userRepository.findOne(userId);
         return new ResponseEntity<>(user, OK);
     }
