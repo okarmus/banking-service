@@ -2,8 +2,11 @@ package org.okarmus.domain;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -14,6 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
+    @NotNull(message = "login can not be null")
+    @Length(min = 4, message = "login must have at least 3 characters" )
     private String login;
     private PersonalInfo personalInfo;
     private ContactInfo contactInfo;

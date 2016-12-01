@@ -9,8 +9,8 @@ import org.okarmus.domain.User
 import org.okarmus.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
-import org.springframework.http.MediaType
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8 as APPLICATION_JSON_UTF8
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @ContextConfiguration(classes = [UserServiceApplication.class, EmbeddedMongoAutoConfiguration.class])
+@TestPropertySource(properties = ["NotNull.user.login = Login is not provided"])
 @WebAppConfiguration
 class UserControllerTest extends Specification{
 
@@ -47,7 +49,7 @@ class UserControllerTest extends Specification{
 
         when:
             MvcResult result = mockMvc.perform(post("/user")
-                                      .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                      .contentType(APPLICATION_JSON_UTF8)
                                       .content(convertObjectToJsonBytes(user)))
                                       .andExpect(status().isCreated())
                                       .andReturn()
@@ -61,6 +63,20 @@ class UserControllerTest extends Specification{
             actualUser.getPersonalInfo() == user.getPersonalInfo()
             actualUser.getAddress() == user.getAddress()
             actualUser.getContactInfo() == user.getContactInfo()
+    }
+
+    def "should return exception when login is null"() {
+        given:
+            User user = createSampleUser()
+            user.login = null
+        when:
+            MvcResult result = mockMvc.perform(post("/user")
+                    .contentType(APPLICATION_JSON_UTF8)
+                    .content(convertObjectToJsonBytes(user)))
+                    .andExpect(status().isBadRequest())
+                    .andReturn()
+        then:
+            result.getResponse().getContentAsString() == "login can not be null"
     }
 
     Object createSampleUser() {
