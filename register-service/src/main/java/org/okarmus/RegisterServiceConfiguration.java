@@ -1,7 +1,7 @@
 package org.okarmus;
 
 import feign.codec.ErrorDecoder;
-import org.okarmus.service.client.auth.response.BodyExtractor;
+import org.okarmus.service.client.response.BodyExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

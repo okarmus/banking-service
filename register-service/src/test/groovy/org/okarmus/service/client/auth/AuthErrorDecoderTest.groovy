@@ -2,7 +2,7 @@ package org.okarmus.service.client.auth
 
 import feign.Response
 import feign.codec.ErrorDecoder
-import org.okarmus.service.client.auth.response.BodyExtractor
+import org.okarmus.service.client.response.BodyExtractor
 import org.okarmus.service.client.exception.ClientExistsException
 import spock.lang.Specification
 

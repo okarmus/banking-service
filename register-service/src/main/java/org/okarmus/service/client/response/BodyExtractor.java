@@ -1,4 +1,4 @@
-package org.okarmus.service.client.auth.response;
+package org.okarmus.service.client.response;
 
 import feign.Response;
 

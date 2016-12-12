@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -52,6 +53,17 @@ class AccountControllerTest extends Specification {
             persisted.getLogin() == "acme"
             persisted.getPassword() == "acmesecret"
             persisted.isActive()
+    }
+
+    def "should delete account" () {
+        given:
+            def id = repository.save(new Account("acme", "acmesecret", true)).getId()
+        when:
+        mockMvc.perform(delete("/account/" + id)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isAccepted())
+        then:
+            repository.findOne(id) == null
     }
 
     public static byte[] convertObjectToJsonBytes(Object object) throws IOException {

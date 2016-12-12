@@ -5,13 +5,12 @@ import org.okarmus.repository.AccountRepository;
 import org.okarmus.service.create.AccountCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -28,10 +27,17 @@ public class AccountController {
     private AccountRepository accountRepository;
 
     @RequestMapping(method = POST)
-    public ResponseEntity<String> createAccount(@RequestBody Account account) {
-        accountCreateService.create(account);
-        return new ResponseEntity<>("", CREATED);
+    public ResponseEntity<Long> createAccount(@RequestBody Account account) {
+        long id = accountCreateService.create(account);
+        return new ResponseEntity<>(id, CREATED);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteAccount(@PathVariable("id") long id) {
+        accountCreateService.delete(id);
+        return new ResponseEntity<>(ACCEPTED);
+    }
+
 
     @RequestMapping("/current")
     public Principal getAccount(Principal principal) { return principal;}

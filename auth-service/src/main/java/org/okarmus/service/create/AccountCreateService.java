@@ -22,17 +22,23 @@ public class AccountCreateService {
     @Value("${exception.message.userAlreadyExist}")
     private String exceptionMessage;
 
-    public void create(Account account) {               //TODO maybe password should be hashed
+    public long create(Account account) {               //TODO maybe password should be hashed
         checkIfLoginUnique(account);
-        saveAccount(account);
+        return saveAccount(account);
     }
+
+    public void delete(Long id) {
+        repository.delete(id);
+    }
+
 
     private void checkIfLoginUnique(Account account) {
         repository.findByLogin(account.getLogin())
                   .ifPresent(a -> { throw new UserExistsException(format(exceptionMessage, a.getLogin()));});
     }
 
-    private void saveAccount(Account account) {
-        repository.save(account);
+    private long saveAccount(Account account) {
+        Account persisted = repository.save(account);
+        return persisted.getId();
     }
 }

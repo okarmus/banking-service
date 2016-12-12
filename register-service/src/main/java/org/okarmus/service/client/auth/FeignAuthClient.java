@@ -4,8 +4,10 @@ import feign.Headers;
 import org.okarmus.domain.Account;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -17,5 +19,8 @@ public interface FeignAuthClient {
 
     @RequestMapping(method = POST, value = "/uaa/account")
     @Headers("Content-Type: application/json")
-    ResponseEntity<String> createAccount(Account account);
+    ResponseEntity<Long> createAccount(Account account);
+
+    @RequestMapping(method = DELETE, value = "/uaa/account/{id}")
+    void deleteAccount(@PathVariable("id") long id);
 }

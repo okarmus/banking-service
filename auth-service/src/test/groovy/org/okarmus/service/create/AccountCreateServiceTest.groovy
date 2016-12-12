@@ -18,7 +18,7 @@ class AccountCreateServiceTest extends Specification {
     @Autowired
     AccountCreateService underTest
 
-    AccountRepository repository = Mock()
+    AccountRepository repository = Stub()
 
     def login = "acme"
     private account = new Account(login, "acmesecret", true)
@@ -39,10 +39,12 @@ class AccountCreateServiceTest extends Specification {
 
     def "should save account when data are correct" () {
         given:
+            long expectedId = 12
             repository.findByLogin(login) >> Optional.empty()
+            repository.save(_) >> new Account(id: expectedId)
         when:
-            underTest.create(account)
+            long actualId = underTest.create(account)
         then:
-            1 * repository.save(account)
+            expectedId == actualId
     }
 }
