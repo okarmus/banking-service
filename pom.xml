@@ -16,6 +16,7 @@
         <module>gateway</module>
         <module>user-service</module>
         <module>register-service</module>
+        <module>hystrix-dashboard</module>
     </modules>
 
 </project>
