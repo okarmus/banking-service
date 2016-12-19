@@ -1,0 +1,12 @@
+server:
+  port: ${PORT:9411}
+
+zipkin:
+  store:
+    type: mem
+
+spring:
+  datasource:
+    initialize: false
+  sleuth:
+    enabled: false

@@ -48,3 +48,10 @@ services:
     restart: always
     ports:
       - 8010:8010
+
+  zipkin-service:
+    build: zipkin-service
+    restart: always
+    ports:
+      - 9411:9411
+      - 9410:9410

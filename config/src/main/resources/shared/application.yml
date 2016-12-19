@@ -19,6 +19,16 @@ eureka:
       defaultZone: http://eureka-service:8761/eureka/
 
 
+spring:
+  sleuth:
+    sampler:
+      percentage: 1.0
+    log:
+      json:
+        enabled: true
+  zipkin:
+    baseUrl: http://zipkin-service:9411/
+
 security:
   oauth2:
     resource:
